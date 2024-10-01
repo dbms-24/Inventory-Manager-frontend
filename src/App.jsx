@@ -12,6 +12,7 @@ function App() {
 
   return (
   <BrowserRouter>
+  <div className="bg-background text-white">
   <AppBar />
     <Routes>
     <Route path='/' element={<Home />} />
@@ -22,6 +23,7 @@ function App() {
     <Route path='/suppliers' element={<Suppliers />} />
     <Route path='/stock' element={<Stock />} />
   </Routes>
+  </div>
 </BrowserRouter>
   )
 }
