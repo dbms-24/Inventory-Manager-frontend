@@ -1,4 +1,5 @@
 import Form from "../components/Form"
+import Get from "../components/Get"
 import { useState } from "react";
 import { Button } from "@mui/material";
 function Employee() {
@@ -31,13 +32,15 @@ function Employee() {
       initialValue:""
     }
   ]
+  const data = Get('http://localhost:8080/employee');
+  console.log(data);
     return (
       <div>
         <Button onClick={()=>setOpen(true)}>Open Modal</Button>
-        <Form open={open} setOpen={setOpen} heading={"Heading"} method={"POST"} url={"EndPoint-1"} submitText={"Submit"} fields={fields}/>
+        <Form open={open} setOpen={setOpen} heading={"NEW JOIN"} method={"POST"} url={'http://localhost:8080/employee'} submitText={"Submit"} fields={fields}/>
         Employee Page
       </div>
     )
   }
-  
+
   export default Employee
