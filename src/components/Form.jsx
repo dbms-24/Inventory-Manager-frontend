@@ -33,15 +33,19 @@ export default function Form({open, setOpen, heading, method, url, submitText, f
             try {
                 const response = await axios.post(url, formState)
                 console.log(response)
+                setOpen(false);
             } catch (error) {
                 console.log(error)
+                setOpen(false);
             }
         }else if(method === "PUT") {
             try {
                 const response = await axios.put(url, formState)
                 console.log(response)
+                setOpen(false);
             } catch (error) {
                 console.log(error)
+                setOpen(false);
             }
         }
     }
