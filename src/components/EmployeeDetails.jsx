@@ -11,6 +11,8 @@ function EmployeeDetails({employeeModalId, setEmployeeModalId, employeeOpen, set
   const [addPhone, setAddPhone] = useState(false);
   const [newPhone, setNewPhone] = useState("");
   const [reload, setReload] = useState(false);
+  const [addEmail, setAddEmail] = useState(false);
+  const [newEmail, setNewEmail] = useState("");
   useEffect(()=>{
     if(employeeModalId){
       setLoading(true);
@@ -56,6 +58,38 @@ function EmployeeDetails({employeeModalId, setEmployeeModalId, employeeOpen, set
         })
 
     }
+
+    function handleAddEmail(){
+      axios.post(`http://localhost:8080/employee/${employeeModalId}/email`,
+      {
+        employee_id: employeeModalId,
+        email : newEmail
+      })
+      .then((res)=>{
+        console.log(res);
+        setReload(!reload);
+        setAddEmail(false);
+        setNewEmail("");
+      })
+      .catch((err)=>{
+      setAddEmail(false);
+      setNewEmail("");
+        console.log(err);
+      })
+  }
+  function handleDeleteEmail(email){
+      axios.delete(`http://localhost:8080/employee/${employeeModalId}/email/${email.id}`)
+      .then((res)=>{
+      console.log(res);
+      setReload(!reload);
+      })
+      .catch((err)=>{
+        setReload(!reload);
+        console.log(err)
+      })
+
+  }
+
     function handleOnclose(){
       setEmployeeOpen(false);
       setEmployeeModalId(null);
@@ -108,17 +142,49 @@ function EmployeeDetails({employeeModalId, setEmployeeModalId, employeeOpen, set
                           )
                         }
                       </div>
-                      <div className="flex flex-col">
-                         <div className="text-black font-heading text-xl">Emails</div>
+                      <div className="flex flex-col mt-2">
+                        <div className="text-black font-heading text-xl flex justify-around mb-3">
+                          <div>Emails</div>
+                          <div onClick={()=>setAddEmail(true)}>
+                            <AddIcon className="text-green-500 cursor-pointer font-bold" />
+                          </div>
+                        </div>
                         {
                           employeeDetails.emails.map((email)=>{
-                            return <div className="font-normal">{email}</div>
+                            return (<div key={email.id} className="font-normal text-xl flex justify-around">
+                                    <div>{email.email}</div>
+                                    <div className="cursor-pointer" onClick={()=>{handleDeleteEmail(email)}}>
+                                   <DeleteIcon className="text-red-600" /> 
+                                    </div>
+                                </div>)
                           })
                         }
-                        <div className="flex justify-center">
-                          <span className="px-3 py-2 mt-4 rounded-lg border-2 border-primary-500 text-black font-heading">Add Email</span>
+                        {
+                          addEmail && 
+                          (
+                          <>
+                          <Input type={"string"} placeholder={"Email"} name={""} value={newEmail} onChange={(e)=>setNewEmail(e.target.value)} />
+                         <div className="flex justify-center">
+                          <span className="px-3 py-2 mt-4 rounded-lg border-2 border-primary-500 text-black font-heading cursor-pointer" onClick={handleAddEmail}>Add Email</span>
                         </div>
+                         </>
+                          )
+                        }
                       </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-8 text-xl font-normal text-gray-500">
+                        <div className="flex justify-around">
+                          <span className="font-heading text-black">Salary</span> 
+                          <div>{employeeDetails.employeeDetails.salary}</div>
+                        </div>
+                        <div className="flex justify-around">
+                          <span className="font-heading text-black">Join Date</span>
+                          <div>{employeeDetails.employeeDetails.join_date}</div> 
+                        </div>
+                        <div className="text-xl col-span-2 text-center font-normal text-gray-500">
+                              <span className="font-heading text-black mr-4">Address</span>
+                              {employeeDetails.employeeDetails.address}
+                        </div>
                     </div>
                   </div> :
                   <div className="text-center text-black font-heading text-2xl">
