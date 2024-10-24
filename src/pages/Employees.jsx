@@ -2,7 +2,8 @@ import EmployeeCard from "../components/EmployeeCard";
 import EmployeeDetails from "../components/EmployeeDetails";
 import Form from "../components/Form"
 import Get from "../components/useGet"
-import { useEffect, useState } from "react";
+import {ThemeContext} from '../App'
+import { useContext, useEffect, useState } from "react";
 function Employee() {
   const [open, setOpen] = useState(false);
   const [employeeOpen, setEmployeeOpen] = useState(false);
@@ -10,6 +11,8 @@ function Employee() {
   const [employeeEditOpen, setEmployeeEditOpen] = useState(0);
   const [employeeEditInitialValue, setEmployeeEditInitialValue] = useState(null);
   const employeeData = Get("http://localhost:8080/employee");
+  const theme = useContext(ThemeContext );
+  console.log("theme", theme);
   // {open, setOpen, heading, onSubmit, submitText, fields}
   // Fields syntax
   // {
@@ -73,7 +76,7 @@ function Employee() {
       <div className="min-h-screen">
         <Form open={open} setOpen={setOpen} heading={"Add an Employee"} method={"POST"} url={'http://localhost:8080/employee'} submitText={"Submit"} fields={fields}/>
         <Form open={employeeEditOpen} setOpen={setEmployeeEditOpen} fields={fields} heading={`Edit ${employeeEditInitialValue?.name} Details`}  url={`http://localhost:8080/employee/${employeeEditInitialValue?.emp_id}`} submitText={"Edit Employee"} method={"PUT"} initialFieldsData={employeeEditInitialValue}  />
-        <div className="flex justify-between px-10 border-b border-white">
+        <div className={"flex justify-between px-10 border-b shadow-primary-300 shadow-md " + `${(theme=='light') ? 'border-primary-500' : 'border-white'}`}>
           <div className="flex flex-col justify-center font-heading text-2xl font-bold my-4">
             <div>
             Employee Details
