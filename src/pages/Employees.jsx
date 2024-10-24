@@ -7,6 +7,8 @@ function Employee() {
   const [open, setOpen] = useState(false);
   const [employeeOpen, setEmployeeOpen] = useState(false);
   const [employeeModalId, setEmployeeModalId] = useState(null);
+  const [employeeEditOpen, setEmployeeEditOpen] = useState(0);
+  const [employeeEditInitialValue, setEmployeeEditInitialValue] = useState(null);
   const employeeData = Get("http://localhost:8080/employee");
   // {open, setOpen, heading, onSubmit, submitText, fields}
   // Fields syntax
@@ -69,6 +71,8 @@ function Employee() {
   console.log(dummy);
     return (
       <div className="min-h-screen">
+        <Form open={open} setOpen={setOpen} heading={"Add an Employee"} method={"POST"} url={'http://localhost:8080/employee'} submitText={"Submit"} fields={fields}/>
+        <Form open={employeeEditOpen} setOpen={setEmployeeEditOpen} fields={fields} heading={`Edit ${employeeEditInitialValue?.name} Details`}  url={`http://localhost:8080/employee/${employeeEditInitialValue?.emp_id}`} submitText={"Edit Employee"} method={"PUT"} initialFieldsData={employeeEditInitialValue}  />
         <div className="flex justify-between px-10 border-b border-white">
           <div className="flex flex-col justify-center font-heading text-2xl font-bold my-4">
             <div>
@@ -81,11 +85,14 @@ function Employee() {
 
         {
           employeeData && employeeData.map((data)=>{
-          return <EmployeeCard id={data.emp_id} name={data.name} role={data.role} setEmployeeOpen={setEmployeeOpen} setEmployeeModalId={setEmployeeModalId} />
+          return (
+                  <div>
+                    <EmployeeCard employeeDetails={data} setEmployeeOpen={setEmployeeOpen} setEmployeeModalId={setEmployeeModalId} setEmployeeEditOpen={setEmployeeEditOpen} setEmployeeEditInitialValue={setEmployeeEditInitialValue} />
+                  </div>
+                  )
         })
         }
       </div>
-        <Form open={open} setOpen={setOpen} heading={"Add an Employee"} method={"POST"} url={'http://localhost:8080/employee'} submitText={"Submit"} fields={fields}/>
         <EmployeeDetails employeeOpen={employeeOpen} setEmployeeOpen={setEmployeeOpen} employeeModalId={employeeModalId} setEmployeeModalId={setEmployeeModalId} />
       </div>
     )
