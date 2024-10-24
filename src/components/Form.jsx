@@ -1,5 +1,5 @@
 import { Button, Container, Modal } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CloseIcon from '@mui/icons-material/Close';
 import Input from "./Input";
 import axios from "axios";
@@ -13,13 +13,29 @@ import axios from "axios";
 // For everythig we need to send the emtire
 // Method is either PUT or POST
 
-export default function Form({open, setOpen, heading, method, url, submitText, fields}) {
-    const initialState = fields.map((field) => {
-        return {
+export default function Form({open, setOpen, heading, method, url, submitText, fields, initialFieldsData = null }) {
+    let initialState = {}
+    fields.map((field) => {
+        initialState = {
+            ...initialState,
             [field.name]: field.initialValue
-        }
+          }
     })
     const [formState, setFormState] = useState(initialState);
+    useEffect(()=>{
+    if(method == "PUT"){
+      // For Put method we need to send the data of the fields present
+      if(initialFieldsData){
+        fields.map((field)=>{
+        initialState = {
+            ...initialState,
+            [field.name]:initialFieldsData[field.name]
+          }
+        })
+       setFormState(initialState);
+      }
+    }
+    },[initialFieldsData])
 
     function handleOnChange(e, name) {
         setFormState({
@@ -34,18 +50,25 @@ export default function Form({open, setOpen, heading, method, url, submitText, f
                 const response = await axios.post(url, formState)
                 console.log(response)
                 setOpen(false);
+                window.location.reload();
             } catch (error) {
                 console.log(error)
                 setOpen(false);
+                 window.location.reload();
+
             }
         }else if(method === "PUT") {
             try {
                 const response = await axios.put(url, formState)
                 console.log(response)
                 setOpen(false);
+               window.location.reload();
+
             } catch (error) {
                 console.log(error)
                 setOpen(false);
+               window.location.reload();
+
             }
         }
     }
@@ -54,7 +77,7 @@ export default function Form({open, setOpen, heading, method, url, submitText, f
         <Modal open={open} onClose={()=>setOpen(false)} className="focus:outline-none">
             <div className="flex flex-col justify-center h-screen">
                 <Container className="bg-secondary-300 rounded-lg text-background m-10 border-2">
-                    <div className="flex justify-end">
+                    <div className="flex justify-end cursor-pointer">
                         <CloseIcon 
                         sx={{ color: 'red', cursor: 'pointer', fontSize: 30 }}
                         color="font-bold text-xl mt-2" onClick={()=>setOpen(false)} />

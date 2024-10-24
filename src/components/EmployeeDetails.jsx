@@ -5,6 +5,7 @@ import axios from "axios";
 import AddIcon from '@mui/icons-material/Add';
 import Input from "./Input";
 import DeleteIcon from '@mui/icons-material/Delete';
+import Calander from "./Calander";
 function EmployeeDetails({employeeModalId, setEmployeeModalId, employeeOpen, setEmployeeOpen}) {
   const [employeeDetails, setEmployeeDetails] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -99,7 +100,7 @@ function EmployeeDetails({employeeModalId, setEmployeeModalId, employeeOpen, set
       <Modal open={employeeOpen} onClose={handleOnclose}>
             <div className="flex flex-col justify-center h-screen">
                 <Container className="bg-secondary-300 rounded-lg text-background m-10 border-2 pt-4 pb-6">
-                    <div className="flex justify-end">
+                    <div className="flex justify-end cursor-pointer">
                         <CloseIcon 
                         sx={{ color: 'red', cursor: 'pointer', fontSize: 30 }}
                         color="font-bold text-xl mt-2" onClick={handleOnclose} />
@@ -116,11 +117,19 @@ function EmployeeDetails({employeeModalId, setEmployeeModalId, employeeOpen, set
                       <div className="flex flex-col mt-2">
                         <div className="text-black font-heading text-xl flex justify-around mb-3">
                           <div>Phone No.s</div>
-                          <div onClick={()=>setAddPhone(true)}>
+                          <div onClick={()=>setAddPhone(!addPhone)}>
+                            {
+                              addPhone ?
+                            <CloseIcon className="text-red-500 cursor-pointer font-bold" />:
                             <AddIcon className="text-green-500 cursor-pointer font-bold" />
+                            }
                           </div>
                         </div>
+                        {(employeeDetails.phones.length == 0) && 
+                          <div className="font-normal text-gray-500">No Phone Nos. present</div>
+                          }
                         {
+                          (employeeDetails.phones.length!=0) &&
                           employeeDetails.phones.map((phone)=>{
                             return (<div key={phone.id} className="font-normal text-xl flex justify-around">
                                     <div>{phone.phone}</div>
@@ -145,11 +154,18 @@ function EmployeeDetails({employeeModalId, setEmployeeModalId, employeeOpen, set
                       <div className="flex flex-col mt-2">
                         <div className="text-black font-heading text-xl flex justify-around mb-3">
                           <div>Emails</div>
-                          <div onClick={()=>setAddEmail(true)}>
+                          <div onClick={()=>setAddEmail(!addEmail)}>
+                            {
+                              addEmail ?
+                            <CloseIcon className="text-red-500 cursor-pointer font-bold" />:
                             <AddIcon className="text-green-500 cursor-pointer font-bold" />
+                            }
                           </div>
                         </div>
-                        {
+                        {(employeeDetails.emails.length == 0) && 
+                          <div className="font-normal text-gray-500">No Emails present</div>
+                          }
+                        {(employeeDetails.emails.length != 0) && 
                           employeeDetails.emails.map((email)=>{
                             return (<div key={email.id} className="font-normal text-xl flex justify-around">
                                     <div>{email.email}</div>
@@ -186,6 +202,7 @@ function EmployeeDetails({employeeModalId, setEmployeeModalId, employeeOpen, set
                               {employeeDetails.employeeDetails.address}
                         </div>
                     </div>
+                    <Calander />
                   </div> :
                   <div className="text-center text-black font-heading text-2xl">
                     Oops Employee data not found !
