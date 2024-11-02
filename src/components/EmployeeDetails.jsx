@@ -5,7 +5,7 @@ import axios from "axios";
 import AddIcon from '@mui/icons-material/Add';
 import Input from "./Input";
 import DeleteIcon from '@mui/icons-material/Delete';
-import Calander from "./Calander";
+import Calendar from "./Calendar.jsx";
 function EmployeeDetails({employeeModalId, setEmployeeModalId, employeeOpen, setEmployeeOpen}) {
   const [employeeDetails, setEmployeeDetails] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -202,7 +202,7 @@ function EmployeeDetails({employeeModalId, setEmployeeModalId, employeeOpen, set
                               {employeeDetails.employeeDetails.address}
                         </div>
                     </div>
-                    <Calander />
+                    <Calendar />
                   </div> :
                   <div className="text-center text-black font-heading text-2xl">
                     Oops Employee data not found !
