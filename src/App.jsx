@@ -13,6 +13,7 @@ import Signin from "./pages/Signin"
 import { useNavigate } from "react-router-dom"
 import axios from "axios"
 import AppBar from './components/AppBar';
+import Admin from "./pages/Admin"
 
 export const ThemeContext = createContext('light');
 export const UserContext = createContext(null);
@@ -82,7 +83,7 @@ function App() {
     <Route path='/dresses' element={<Dresses />} />
     <Route path='/customers' element={<Customers />} />
     <Route path='/suppliers' element={<Suppliers />} />
-    <Route path='/stock' element={<Stock />} />
+    <Route path='/admin' element={<Admin />} />
   </Routes>
   
   </UserContext.Provider>
