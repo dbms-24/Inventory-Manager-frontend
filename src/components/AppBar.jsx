@@ -1,4 +1,4 @@
-import {useState} from "react"
+import {useEffect, useState} from "react"
 import { useContext } from "react"
 import { UserContext } from "../App"
 import { ThemeContext } from "../App";
@@ -7,6 +7,7 @@ import { DarkMode, LightMode } from "@mui/icons-material"
 import Switch from '@mui/material/Switch';
 import NightsStayIcon from '@mui/icons-material/NightsStay';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
+import { Link } from "react-router-dom";
 
 
 function AppBar({setTheme}) {
@@ -25,6 +26,17 @@ function AppBar({setTheme}) {
         setTheme('light');
       }
     }
+
+    function handleHome(){
+      if(!userDetails){
+        return '/home';
+      }else if(userDetails.role == 'USER'){
+        return '/';
+      }else {
+        return '/admin'
+      }
+    }
+  
 
     function handleOnclick(){
       setUserOpen(true);
@@ -46,16 +58,17 @@ function AppBar({setTheme}) {
             </div>
             <div className="flex flex-col justify-center">
               <div className="flex">
-                <div className="border-2 border-primary-500 rounded-lg transition-all duration-300 ease-in-out hover:scale-110 hover:border-primary-400 hover:shadow-lg cursor-pointer px-2 py-1 flex items-center justify-center mr-4">Home</div>
+                <div className="border-2 border-primary-500 rounded-lg transition-all duration-300 ease-in-out hover:scale-110 hover:border-primary-400 hover:shadow-lg cursor-pointer px-2 py-1 flex items-center justify-center ml-2 mr-4"><Link to={handleHome()}> Home </Link></div>
                 {
                   userDetails ? 
                   <div>
                   <div className="w-10 h-10 border-2 border-primary-500 rounded-full transition-all duration-300 ease-in-out hover:scale-110 hover:border-primary-400 hover:shadow-lg cursor-pointer flex items-center justify-center" onClick={handleOnclick} >
-                    <span className="text-primary-500">{userDetails.name[0]}</span>
+                    <span className="font-heading text-xl">{userDetails.name[0].toUpperCase()}</span>
                   </div>
                   <UserDetails userOpen={userOpen} setUserOpen={setUserOpen} />
                   </div>:
-                  <div>Login</div>
+                <div className="border-2 border-primary-500 rounded-lg transition-all duration-300 ease-in-out hover:scale-110 hover:border-primary-400 hover:shadow-lg cursor-pointer px-2 py-1 flex items-center justify-center mr-4"><Link to={'/signin'}> Login </Link></div>
+
                 }
               </div>
             </div>

@@ -32,10 +32,10 @@ function App() {
           'Content-Type' : 'application/json'
         }
       }).then((res)=>{
-          console.log("Reached ", res.status)
           if(res.status == 200){
             // The role of this user is USER 
               setUserDetails(res.data);
+              navigate('/');
           }else {
             // ROLE is not a USER chk for ADMIN
             axios.get(('http://localhost:8080/admin/healthy'),{
@@ -44,8 +44,10 @@ function App() {
                 'Content-Type' : 'application/json'
               }
             }).then((res)=>{
+                // Admin account
                 if(res.status == 200){
                     setUserDetails(res.data);
+                    navigate('/admin');
                 }else {
                   window.localStorage.removeItem("token");
                   navigate('/signin');
