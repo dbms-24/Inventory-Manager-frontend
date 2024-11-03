@@ -54,29 +54,11 @@ function Employee() {
     }
    ]
   console.log("employee", employeeData);
-  const dummy=[
-    {
-      'name':"Rashmik",
-      "id":1,
-      "role":"xyz"
-    },
-    {
-      "name":"Jeevan",
-      "id":2,
-      "role":"xyz"
-    },
-    {
-      "name":"Jeevan",
-      "id":2,
-      "role":"xyz"
-    }
-  ]
-  console.log(dummy);
     return (
       <div className="min-h-screen">
         <Form open={open} setOpen={setOpen} heading={"Add an Employee"} method={"POST"} url={'http://localhost:8080/employee'} submitText={"Submit"} fields={fields}/>
         <Form open={employeeEditOpen} setOpen={setEmployeeEditOpen} fields={fields} heading={`Edit ${employeeEditInitialValue?.name} Details`}  url={`http://localhost:8080/employee/${employeeEditInitialValue?.emp_id}`} submitText={"Edit Employee"} method={"PUT"} initialFieldsData={employeeEditInitialValue}  />
-        <div className={"flex justify-between px-10 border-b shadow-primary-300 shadow-md " + `${(theme=='light') ? 'border-primary-500' : 'border-white'}`}>
+        <div className={"flex justify-between px-10"}>
           <div className="flex flex-col justify-center font-heading text-2xl font-bold my-4">
             <div>
             Employee Details

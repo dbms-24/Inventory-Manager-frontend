@@ -10,7 +10,13 @@ export default function Get(url) {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(url);
+      const token = window.localStorage.getItem('token');
+      const response = await axios.get(url, {
+        'headers' : {
+          'Authorization' : token,
+          'Content-Type' : 'application/json'
+        }
+      });
       return response.data;
     } catch (error) {
       console.log(error);

@@ -23,6 +23,7 @@ export default function Form({open, setOpen, heading, method, url, submitText, f
     })
     const [formState, setFormState] = useState(initialState);
     useEffect(()=>{
+    const token = window.localStorage.getItem('token');
     if(method == "PUT"){
       // For Put method we need to send the data of the fields present
       if(initialFieldsData){
@@ -47,7 +48,12 @@ export default function Form({open, setOpen, heading, method, url, submitText, f
         console.log(formState)
         if(method === "POST") {
             try {
-                const response = await axios.post(url, formState)
+                const response = await axios.post(url,{
+                    'headers' : {
+                        'Authorization' : token,
+                        'Content-Type' : 'application/json'
+                      }
+                }, formState)
                 console.log(response)
                 setOpen(false);
                 window.location.reload();
@@ -59,7 +65,12 @@ export default function Form({open, setOpen, heading, method, url, submitText, f
             }
         }else if(method === "PUT") {
             try {
-                const response = await axios.put(url, formState)
+                const response = await axios.put(url,{
+                    'headers' : {
+                        'Authorization' : token,
+                        'Content-Type' : 'application/json'
+                      }
+                }, formState)
                 console.log(response)
                 setOpen(false);
                window.location.reload();
@@ -102,4 +113,4 @@ export default function Form({open, setOpen, heading, method, url, submitText, f
         </Modal>
         </>
     )
-}
+};

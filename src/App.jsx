@@ -67,18 +67,11 @@ function App() {
   },[])
 
   const [theme, setTheme] = useState('light');
-  function handleThemeChange(){
-  if(theme == 'light'){
-    setTheme('dark');
-  }else {
-    setTheme('light');
-  }
-}
   return (
   <div className={`${(theme == 'light') ? 'text-black ' : "text-white "}`+`${(theme == 'light') ? 'bg-white ' : "bg-background "}`+'relative'}>
     <ThemeContext.Provider value={theme} >
     <UserContext.Provider value={userDetails} >
-    <AppBar />
+    <AppBar setTheme={setTheme}/>
     <Routes>
     <Route path='/' element={<Home />} />
     <Route path='/signin' element={<Signin />} />
@@ -89,13 +82,7 @@ function App() {
     <Route path='/suppliers' element={<Suppliers />} />
     <Route path='/stock' element={<Stock />} />
   </Routes>
-  <div className={"absolute bottom-6 right-6 border-2 p-2 rounded-lg border-secondary-500 transition-all duration-300 ease-in-out hover:scale-125 hover:border-primary-400 hover:shadow-lg " + `${(theme=='dark') ? 'bg-white' : 'bg-background'}`} onClick={handleThemeChange}>
-    {
-      (theme == 'dark')?
-      <LightMode className="text-orange-700" /> :
-      <DarkMode className="text-white" />
-    }
-  </div>
+  
   </UserContext.Provider>
   </ThemeContext.Provider>
   </div>
