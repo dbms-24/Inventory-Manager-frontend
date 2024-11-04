@@ -23,7 +23,6 @@ export default function Form({open, setOpen, heading, method, url, submitText, f
     })
     const [formState, setFormState] = useState(initialState);
     useEffect(()=>{
-    const token = window.localStorage.getItem('token');
     if(method == "PUT"){
       // For Put method we need to send the data of the fields present
       if(initialFieldsData){
@@ -45,42 +44,39 @@ export default function Form({open, setOpen, heading, method, url, submitText, f
         })
     }
     async function handleOnClick() {
+        const token = window.localStorage.getItem('token')
+        console.log("token", token)
         console.log(formState)
         if(method === "POST") {
             try {
-                const response = await axios.post(url,{
+                const response = await axios.post(url,formState,{
                     'headers' : {
                         'Authorization' : token,
                         'Content-Type' : 'application/json'
                       }
-                }, formState)
+                })
+              if(response.status == 200){
+                window.location.reload();
+              }
                 console.log(response)
                 setOpen(false);
-                window.location.reload();
             } catch (error) {
                 console.log(error)
                 setOpen(false);
-                 window.location.reload();
-
             }
         }else if(method === "PUT") {
-            try {
-                const response = await axios.put(url,{
+
+              axios.put(url,formState,{
                     'headers' : {
                         'Authorization' : token,
                         'Content-Type' : 'application/json'
                       }
-                }, formState)
-                console.log(response)
-                setOpen(false);
-               window.location.reload();
-
-            } catch (error) {
-                console.log(error)
-                setOpen(false);
-               window.location.reload();
-
-            }
+                }).then((res)=>{
+                    window.location.reload() 
+                  }).catch((err)=>{
+                      console.log(err);
+                  })
+ 
         }
     }
     return (

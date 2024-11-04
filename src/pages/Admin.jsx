@@ -20,7 +20,7 @@ function Admin() {
       console.log(err);
       alert("Request failed reload the page");
     })
-    })
+    }, [])
     return (
       <div className="min-h-screen">
       Admin Page

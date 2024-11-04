@@ -1,14 +1,24 @@
 import { TextField } from "@mui/material";
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { UserContext } from "../App";
 
 
-function Signin() {
+function Signin({setUserDetails}) {
     const navigate = useNavigate();
     const [phoneNum, setPhoneNum] = useState("");
     const [password, setPassword] = useState("");
-    
+    const userDetails = useContext(UserContext);
+    useEffect(()=>{
+      if(userDetails){
+        if(userDetails.role == "ADMIN"){
+          navigate('/admin')
+        }else{
+          navigate('/')
+        }
+      }
+    },[])
     async function handleOnClick(){
         try{
         const res = await axios.post('http://localhost:8080/auth/authenticate',{
@@ -18,10 +28,48 @@ function Signin() {
         if(res.status == 200){
           const token = res.data.token;
           window.localStorage.setItem('token', `Bearer ${token}`);
-          navigate('/');
-          window.location.reload();
+          const newToken = 'Bearer '+token;
+      axios.get('http://localhost:8080/',{
+        headers : {
+          'Authorization' : newToken,
+          'Content-Type' : 'application/json'
+        }
+      }).then((res)=>{
+          if(res.status == 200){
+            // The role of this user is USER 
+              setUserDetails(res.data);
+              console.log(userDetails);
+              navigate('/');
+          }else {
+            // ROLE is not a USER chk for ADMIN
+            axios.get(('http://localhost:8080/admin/healthy'),{
+              'headers' : {
+                'Authorization' : newToken,
+                'Content-Type' : 'application/json'
+              }
+            }).then((res)=>{
+                // Admin account
+                if(res.status == 200){
+                    setUserDetails(res.data);
+                    navigate('/admin')
+                }else {
+                  window.localStorage.removeItem("token");
+                  navigate('/signin');
+                }
+            }).catch((err)=>{
+              // Error on both so invalidate token and request for signin
+              console.log(err);
+              window.localStorage.removeItem("token");
+              navigate('/signin');
+            })
+          }
+      }).catch((err)=>{
+        console.log(err);
+        window.localStorage.removeItem("store_token");
+        navigate('/signin');
+      })
+
         }else{
-          navigate('/')
           window.location.reload();
         }
 

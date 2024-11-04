@@ -5,7 +5,6 @@ import Dresses from "./pages/Dresses"
 import { Routes, Route } from "react-router-dom"
 import Suppliers from "./pages/Suppliers"
 import Customers from "./pages/Customers"
-import Stock from "./pages/Stock"
 import { useEffect, useState } from "react"
 import { DarkMode, LightMode } from "@mui/icons-material"
 import { createContext } from "react";
@@ -27,6 +26,7 @@ function App() {
     if(!token){
       navigate('/signin');
     }else{
+      if(!userDetails){
       axios.get('http://localhost:8080/',{
         headers : {
           'Authorization' : token,
@@ -36,7 +36,6 @@ function App() {
           if(res.status == 200){
             // The role of this user is USER 
               setUserDetails(res.data);
-              navigate('/');
           }else {
             // ROLE is not a USER chk for ADMIN
             axios.get(('http://localhost:8080/admin/healthy'),{
@@ -48,7 +47,6 @@ function App() {
                 // Admin account
                 if(res.status == 200){
                     setUserDetails(res.data);
-                    navigate('/admin');
                 }else {
                   window.localStorage.removeItem("token");
                   navigate('/signin');
@@ -65,7 +63,7 @@ function App() {
         window.localStorage.removeItem("store_token");
         navigate('/signin');
       })
-      
+    }
     }
   },[])
 
@@ -77,7 +75,7 @@ function App() {
     <AppBar setTheme={setTheme}/>
     <Routes>
     <Route path='/' element={<Home />} />
-    <Route path='/signin' element={<Signin />} />
+    <Route path='/signin' element={<Signin setUserDetails={setUserDetails} />} />
     <Route path='/employees' element={<EmployeesPage />} />
     <Route path='/transactions' element={<Trasnsactions />} />
     <Route path='/dresses' element={<Dresses />} />

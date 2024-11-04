@@ -11,8 +11,6 @@ function Employee() {
   const [employeeEditOpen, setEmployeeEditOpen] = useState(0);
   const [employeeEditInitialValue, setEmployeeEditInitialValue] = useState(null);
   const employeeData = Get("http://localhost:8080/employee");
-  const theme = useContext(ThemeContext );
-  console.log("theme", theme);
   // {open, setOpen, heading, onSubmit, submitText, fields}
   // Fields syntax
   // {
