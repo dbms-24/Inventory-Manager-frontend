@@ -35,34 +35,14 @@ function Signin({setUserDetails}) {
           'Content-Type' : 'application/json'
         }
       }).then((res)=>{
-          if(res.status == 200){
-            // The role of this user is USER 
+           if(res.status == 200){
               setUserDetails(res.data);
-              console.log(userDetails);
-              navigate('/');
-          }else {
-            // ROLE is not a USER chk for ADMIN
-            axios.get(('http://localhost:8080/admin/healthy'),{
-              'headers' : {
-                'Authorization' : newToken,
-                'Content-Type' : 'application/json'
+              if(res.data.role == "ADMIN"){
+                navigate('/admin');
+              }else {
+                navigate('/');
               }
-            }).then((res)=>{
-                // Admin account
-                if(res.status == 200){
-                    setUserDetails(res.data);
-                    navigate('/admin')
-                }else {
-                  window.localStorage.removeItem("token");
-                  navigate('/signin');
-                }
-            }).catch((err)=>{
-              // Error on both so invalidate token and request for signin
-              console.log(err);
-              window.localStorage.removeItem("token");
-              navigate('/signin');
-            })
-          }
+            }
       }).catch((err)=>{
         console.log(err);
         window.localStorage.removeItem("store_token");

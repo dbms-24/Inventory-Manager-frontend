@@ -6,7 +6,6 @@ import { Routes, Route } from "react-router-dom"
 import Suppliers from "./pages/Suppliers"
 import Customers from "./pages/Customers"
 import { useEffect, useState } from "react"
-import { DarkMode, LightMode } from "@mui/icons-material"
 import { createContext } from "react";
 import Signin from "./pages/Signin"
 import { useNavigate } from "react-router-dom"
@@ -33,31 +32,9 @@ function App() {
           'Content-Type' : 'application/json'
         }
       }).then((res)=>{
-          if(res.status == 200){
-            // The role of this user is USER 
-              setUserDetails(res.data);
-          }else {
-            // ROLE is not a USER chk for ADMIN
-            axios.get(('http://localhost:8080/admin/healthy'),{
-              'headers' : {
-                'Authorization' : token,
-                'Content-Type' : 'application/json'
-              }
-            }).then((res)=>{
-                // Admin account
-                if(res.status == 200){
-                    setUserDetails(res.data);
-                }else {
-                  window.localStorage.removeItem("token");
-                  navigate('/signin');
-                }
-            }).catch((err)=>{
-              // Error on both so invalidate token and request for signin
-              console.log(err);
-              window.localStorage.removeItem("token");
-              navigate('/signin');
-            })
-          }
+        if(res.status == 200){
+          setUserDetails(res.data);
+        }
       }).catch((err)=>{
         console.log(err);
         window.localStorage.removeItem("store_token");
