@@ -19,7 +19,7 @@ export default function CustomersStock({open, setOpen , transactionsId, setTrans
     const stock = data?.filter((stock)=>{
         return (stock.id == transactionsId);
       })
-
+      console.log(stock)
     function handleClose(){
         setTransactionsId(null);
         setOpen(false);
@@ -52,23 +52,23 @@ export default function CustomersStock({open, setOpen , transactionsId, setTrans
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {stock && stock[0]?.map((data) => (
+                            {stock && stock[0] && stock[0].stockDressDescription?.map((data) => (
                             <TableRow
-                                key={data.stockDressDescription.id}
+                                key={data.id}
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 onClick={()=>handleDressId(data)}
                                 selected ={true}
                                 >
                                 <TableCell component="th" scope="row">
-                                {data.stockDressDescription.id}
+                                {data.id}
                                 </TableCell>
-                                <TableCell align="right">{data.stockDressDescription.dress_id}</TableCell>
-                                <TableCell align="right">{data.stockDressDescription.available_quantity}</TableCell>
-                                <TableCell align="right">{data.stockDressDescription.purchase_date}</TableCell>
-                                <TableCell align="right">{data.stockDressDescription.quantity}</TableCell>
-                                <TableCell align="right">{data.stockDressDescription.purchase_price}</TableCell>
-                                <TableCell align="right">{data.stockDressDescription.selling_price}</TableCell>
-                                <TableCell align="right">{data.stockDressDescription.damaged_quantity}</TableCell>
+                                <TableCell align="right">{data.dress_id}</TableCell>
+                                <TableCell align="right">{data.available_quantity}</TableCell>
+                                <TableCell align="right">{data.purchase_date}</TableCell>
+                                <TableCell align="right">{data.quantity}</TableCell>
+                                <TableCell align="right">{data.purchase_price}</TableCell>
+                                <TableCell align="right">{data.selling_price}</TableCell>
+                                <TableCell align="right">{data.damaged_quantity}</TableCell>
                             </TableRow>
                             ))}
                         </TableBody>

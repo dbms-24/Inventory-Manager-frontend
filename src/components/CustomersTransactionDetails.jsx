@@ -30,6 +30,7 @@ export default function CustomersTransactionDetails() {
         <div className="flex justify-center">
 
             <CustomersStock open={open} setOpen={setOpen} transactionsId={transactionsId} setTransactionsId={setTransactionsId} data={customerTransactions} />
+          <div className="w-3/4" >
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                 <TableHead>
@@ -45,7 +46,8 @@ export default function CustomersTransactionDetails() {
                     <TableRow
                         key={Data.id}
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                        onClick={handleOpen(Data)} 
+                        onClick={()=>handleOpen(Data)}
+                        selected={true}
                     >
                         <TableCell component="th" scope="row">
                         {Data.id}
@@ -58,7 +60,7 @@ export default function CustomersTransactionDetails() {
                 </TableBody>
                 </Table>
             </TableContainer>
-                
+          </div>    
         </div>
     )
 }

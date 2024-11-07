@@ -10,7 +10,7 @@ import Input from './Input';
 import axios from 'axios';
 
 
-function Bill({currCustomer, invenetoryData, handleNext}) {
+function SupplierBill({currSupplier, activeDressData, handleNext}) {
     function findValue(val1, val2){
         let value = 0;
         if(val1) value += parseInt(val1);
@@ -18,50 +18,34 @@ function Bill({currCustomer, invenetoryData, handleNext}) {
         return value;
       }
     const [finalBill, setFinalBill] = React.useState(0);
-    const [points, setPoints] = React.useState(0);
     let totalBill = 0;
 
-    const billData = invenetoryData.filter((data)=>{
+    const billData = activeDressData.filter((data)=>{
       if(data.selected == true){
-        totalBill+=findValue(data.new_required_quantity, data.new_damaged_quantity)*findValue(0, data.selling_price);
+        totalBill+=findValue(data.available_quantity, data.damaged_quantity)*findValue(0, data.purchase_price);
       }
       return (data.selected == true);
     })
 
     async function handleOnClick(){
-        const desc = billData.map((data)=>{
-          return {
-            ...data,
-            'available_quantity' : data.new_required_quantity,
-            'damaged_quantity' : data.new_damaged_quantity,
-          }
-        })
+        const desc = billData;
         const today = new Date();
         const formattedDate = today.toISOString().split('T')[0];
        const finalBillData = {
-        'customer_id' : currCustomer.id,
+        'supplier_id' : currSupplier.id,
         'transaction_date' : formattedDate,
         'amount' : finalBill,
-        'StockDescription': desc
+        'StockDescriptionSupplier': desc
         } 
         const token = window.localStorage.getItem('token');
         try{
 
-        await axios.post(`http://localhost:8080/transaction/customer/${currCustomer.id}`,finalBillData, {
+        await axios.post(`http://localhost:8080/transaction/supplier/${currSupplier.id}`,finalBillData, {
                     'headers' : {
                         'Authorization' : token,
                         'Content-Type' : 'application/json'
                       }
         })
-        await axios.put(`http://localhost:8080/customer/${currCustomer.id}`, {
-              ...currCustomer,
-              'points' : points
-              },{
-                    'headers' : {
-                        'Authorization' : token,
-                        'Content-Type' : 'application/json'
-                      }
-              })
         handleNext();
       }catch(err){
         console.log(err);
@@ -76,7 +60,7 @@ function Bill({currCustomer, invenetoryData, handleNext}) {
         <TableHead>
           <TableRow>
             <TableCell>SNo</TableCell>
-            <TableCell align="right">Inventory-Id</TableCell>
+            <TableCell align="right">ActiveDressId</TableCell>
             <TableCell align="right">Price (Rs)</TableCell>
             <TableCell align="right">Quantity</TableCell>
             <TableCell align="right">Amount</TableCell>
@@ -91,10 +75,10 @@ function Bill({currCustomer, invenetoryData, handleNext}) {
               <TableCell component="th" scope="row">
                 {ind + 1}
               </TableCell>
-              <TableCell align="right">{row.id}</TableCell>
-              <TableCell align="right">{row.selling_price}</TableCell>
-              <TableCell align="right">{findValue(row.new_damaged_quantity, row.new_required_quantity) }</TableCell>
-              <TableCell align="right">{findValue(0,row.selling_price) *(findValue(row.new_damaged_quantity, row.new_required_quantity))}</TableCell>
+              <TableCell align="right">{row.dress_id}</TableCell>
+              <TableCell align="right">{row.purchase_price}</TableCell>
+              <TableCell align="right">{findValue(row.damaged_quantity, row.available_quantity) }</TableCell>
+              <TableCell align="right">{findValue(0,row.purchase_price) *(findValue(row.damaged_quantity, row.available_quantity))}</TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -104,7 +88,6 @@ function Bill({currCustomer, invenetoryData, handleNext}) {
           <div className='text-center font-normal'>Total Bill : {totalBill} Rs</div>
           <div className='flex justify-around'>
           <Input type={'number'} placeholder={'Enter final Bill'} name={"Final Bill"} value={finalBill} onChange={(e)=>setFinalBill(e.target.value)} />
-          <Input type={'number'} placeholder={'Enter Points'} name={"Points"} value={points} onChange={(e)=>setPoints(e.target.value)} />
           </div>
           <div className="flex justify-center">
               <div onClick={handleOnClick}
@@ -117,4 +100,4 @@ function Bill({currCustomer, invenetoryData, handleNext}) {
     )
   }
   
-  export default Bill
+  export default SupplierBill;
