@@ -1,12 +1,11 @@
-import { MonthCalendar } from "@mui/x-date-pickers";
 
 function Calendar() {
 
     return (
       <div>
-        <MonthCalendar />
+        Calander
       </div>
     )
   }
   
-  export default Calendar;
+  export default Calendar

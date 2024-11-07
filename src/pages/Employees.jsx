@@ -51,7 +51,6 @@ function Employee() {
       initialValue:""
     }
    ]
-  console.log("employee", employeeData);
     return (
       <div className="min-h-screen">
         <Form open={open} setOpen={setOpen} heading={"Add an Employee"} method={"POST"} url={'http://localhost:8080/employee'} submitText={"Submit"} fields={fields}/>

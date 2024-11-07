@@ -14,6 +14,7 @@ import axios from "axios";
 // Method is either PUT or POST
 
 export default function Form({open, setOpen, heading, method, url, submitText, fields, initialFieldsData = null }) {
+    console.log(initialFieldsData);
     let initialState = {}
     fields.map((field) => {
         initialState = {
@@ -32,7 +33,10 @@ export default function Form({open, setOpen, heading, method, url, submitText, f
             [field.name]:initialFieldsData[field.name]
           }
         })
-       setFormState(initialState);
+       setFormState({
+        ...initialState,
+        id : initialFieldsData['id']
+       });
       }
     }
     },[initialFieldsData])
@@ -45,8 +49,6 @@ export default function Form({open, setOpen, heading, method, url, submitText, f
     }
     async function handleOnClick() {
         const token = window.localStorage.getItem('token')
-        console.log("token", token)
-        console.log(formState)
         if(method === "POST") {
             try {
                 const response = await axios.post(url,formState,{
@@ -58,14 +60,13 @@ export default function Form({open, setOpen, heading, method, url, submitText, f
               if(response.status == 200){
                 window.location.reload();
               }
-                console.log(response)
                 setOpen(false);
             } catch (error) {
                 console.log(error)
                 setOpen(false);
             }
         }else if(method === "PUT") {
-
+                console.log(formState);
               axios.put(url,formState,{
                     'headers' : {
                         'Authorization' : token,

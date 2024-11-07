@@ -21,7 +21,6 @@ function App() {
   const [userDetails, setUserDetails] = useState(null);
   useEffect(()=>{
     const token = window.localStorage.getItem('token');
-    console.log("token",token);
     if(!token){
       navigate('/signin');
     }else{

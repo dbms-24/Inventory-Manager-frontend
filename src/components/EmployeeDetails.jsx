@@ -14,10 +14,17 @@ function EmployeeDetails({employeeModalId, setEmployeeModalId, employeeOpen, set
   const [reload, setReload] = useState(false);
   const [addEmail, setAddEmail] = useState(false);
   const [newEmail, setNewEmail] = useState("");
+  const token = window.localStorage.getItem('token')
+
   useEffect(()=>{
     if(employeeModalId){
       setLoading(true);
-     axios.get(`http://localhost:8080/employee/${employeeModalId}`)
+     axios.get(`http://localhost:8080/employee/${employeeModalId}`,{
+      'headers' : {
+        'Authorization' : token,
+        'Content-Type' : 'application/json'
+      }
+     })
     .then((res)=>{
         setEmployeeDetails(res.data);
         setLoading(false);
@@ -28,12 +35,20 @@ function EmployeeDetails({employeeModalId, setEmployeeModalId, employeeOpen, set
       })
     }
   },[employeeOpen, reload]);
+
+  
   
     function handleAddPhoneNumber(){
         axios.post(`http://localhost:8080/employee/${employeeModalId}/phone`,
         {
           employee_id: employeeModalId,
           phone : newPhone
+        },
+        {
+          'headers' : {
+            'Authorization' : token,
+            'Content-Type' : 'application/json'
+          }
         })
         .then((res)=>{
           console.log(res);
@@ -48,7 +63,12 @@ function EmployeeDetails({employeeModalId, setEmployeeModalId, employeeOpen, set
         })
     }
     function handleDeletePhone(phone){
-        axios.delete(`http://localhost:8080/employee/${employeeModalId}/phone/${phone.id}`)
+        axios.delete(`http://localhost:8080/employee/${employeeModalId}/phone/${phone.id}`,{
+          'headers' : {
+            'Authorization' : token,
+            'Content-Type' : 'application/json'
+          }
+        })
         .then((res)=>{
         console.log(res);
         setReload(!reload);
@@ -65,7 +85,14 @@ function EmployeeDetails({employeeModalId, setEmployeeModalId, employeeOpen, set
       {
         employee_id: employeeModalId,
         email : newEmail
-      })
+      },
+      {
+        'headers' : {
+          'Authorization' : token,
+          'Content-Type' : 'application/json'
+        }
+      }
+    )
       .then((res)=>{
         console.log(res);
         setReload(!reload);
@@ -79,18 +106,36 @@ function EmployeeDetails({employeeModalId, setEmployeeModalId, employeeOpen, set
       })
   }
   function handleDeleteEmail(email){
-      axios.delete(`http://localhost:8080/employee/${employeeModalId}/email/${email.id}`)
+      axios.delete(`http://localhost:8080/employee/${employeeModalId}/email/${email.id}`,{
+        'headers' : {
+          'Authorization' : token,
+          'Content-Type' : 'application/json'
+        }
+      })
       .then((res)=>{
-      console.log(res);
-      setReload(!reload);
+        console.log(res);
+        setReload(!reload);
       })
       .catch((err)=>{
         setReload(!reload);
         console.log(err)
       })
-
   }
-
+    function handleDelete(){
+      axios.delete(`http://localhost:8080/employee/${employeeModalId}`,{
+        'headers' : {
+          'Authorization' : token,
+          'Content-Type' : 'application/json'
+        }
+      })
+      .then((res)=>{
+        window.location.reload();
+      })
+      .catch((err)=>{
+        setReload(!reload);
+        console.log(err)
+      })
+    }
     function handleOnclose(){
       setEmployeeOpen(false);
       setEmployeeModalId(null);
@@ -203,6 +248,9 @@ function EmployeeDetails({employeeModalId, setEmployeeModalId, employeeOpen, set
                         </div>
                     </div>
                     <Calendar />
+                    <div className="flex flex justify-center">
+                    <div className="border-2 border-red-500 rounded-lg transition-all duration-300 ease-in-out hover:scale-110 hover:border-red-400 hover:shadow-lg cursor-pointer px-4 py-2 flex items-center justify-center ml-2 mr-4 text-red-500" onClick={handleDelete} > DELETE </div>
+                    </div>
                   </div> :
                   <div className="text-center text-black font-heading text-2xl">
                     Oops Employee data not found !
