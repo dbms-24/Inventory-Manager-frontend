@@ -1,4 +1,4 @@
-# Setting up FrontEnd
+# Setting up the FrontEnd
 ## Setting up Locally
 
 ### 1. Clone the repository
