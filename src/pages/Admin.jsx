@@ -6,7 +6,7 @@ import { useEffect, useState } from "react"
 
 function Admin() {
     const [open, setOpen] = useState(false);
-    const Data = Get("http://localhost:8080/admin/get_users");
+    const Data = Get(`${import.meta.env.VITE_BACKEND_URL}/admin/get_users`);
 
     const userData = Data?.filter((user)=>{
       return (user.role == "USER");
@@ -37,7 +37,7 @@ function Admin() {
 
     return (
       <div className="min-h-screen">
-        <Form open={open} setOpen={setOpen} heading={"Add an User"} method={"POST"} url={'http://localhost:8080/admin/add_user'} submitText={"Submit"} fields={fields}/>
+        <Form open={open} setOpen={setOpen} heading={"Add an User"} method={"POST"} url={`${import.meta.env.VITE_BACKEND_URL}/admin/add_user`} submitText={"Submit"} fields={fields}/>
 
         {/* Admins */}
         <div className={"flex justify-between px-10"}>

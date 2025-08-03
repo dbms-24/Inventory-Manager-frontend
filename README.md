@@ -19,7 +19,13 @@ cd Inventory-Manager-frontend
 npm install
 ```
 
-### 3. Start the local dev server 
+### 4. Create .env file and add appropriate variables from .env.example
+
+```sh
+cp .env.example .env
+```
+
+### 5. Start the local dev server 
 
 ```sh
 npm run dev

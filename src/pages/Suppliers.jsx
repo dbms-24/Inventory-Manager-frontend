@@ -26,12 +26,12 @@ function Suppliers() {
   const [supplierModalId, setSupplierModalId] = useState(null);
   const [supplierEditOpen, setSupplierEditOpen] = useState(0);
   const [supplierEditInitialValue, setSupplierEditInitialValue] = useState(null);
-  const supplierData = Get("http://localhost:8080/supplier");
+  const supplierData = Get(`${import.meta.env.VITE_BACKEND_URL}/supplier`);
 
   return (
     <div className="min-h-screen">
-        <Form open={open} setOpen={setOpen} heading={"Add a Supplier"} method={"POST"} url={'http://localhost:8080/supplier'} submitText={"Submit"} fields={fields}/>
-        <Form open={supplierEditOpen} setOpen={setSupplierEditOpen} fields={fields} heading={`Edit ${supplierEditInitialValue?.name} Details`}  url={`http://localhost:8080/supplier/${supplierEditInitialValue?.id}`} submitText={"Edit Supplier"} method={"PUT"} initialFieldsData={supplierEditInitialValue}  />
+        <Form open={open} setOpen={setOpen} heading={"Add a Supplier"} method={"POST"} url={`${import.meta.env.VITE_BACKEND_URL}/supplier`} submitText={"Submit"} fields={fields}/>
+        <Form open={supplierEditOpen} setOpen={setSupplierEditOpen} fields={fields} heading={`Edit ${supplierEditInitialValue?.name} Details`}  url={`${import.meta.env.VITE_BACKEND_URL}/supplier/${supplierEditInitialValue?.id}`} submitText={"Edit Supplier"} method={"PUT"} initialFieldsData={supplierEditInitialValue}  />
         <div className={"flex justify-between px-10"}>
           <div className="flex flex-col justify-center font-heading text-2xl font-bold my-4">
             <div>

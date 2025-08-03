@@ -25,7 +25,7 @@ function App() {
       navigate('/signin');
     }else{
       if(!userDetails){
-      axios.get('http://localhost:8080/',{
+      axios.get(import.meta.env.VITE_BACKEND_URL,{
         headers : {
           'Authorization' : token,
           'Content-Type' : 'application/json'

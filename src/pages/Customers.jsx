@@ -11,7 +11,7 @@ function Customers() {
   const [customerModalId, setCustomerModalId] = useState(null);
   const [customerEditOpen, setCustomerEditOpen] = useState(0);
   const [customerEditInitialValue, setCustomerEditInitialValue] = useState(null);
-  const customerData = Get("http://localhost:8080/customer");
+  const customerData = Get(`${import.meta.env.VITE_BACKEND_URL}/customer`);
   const fields = [
     {
       name:"name",
@@ -46,8 +46,8 @@ function Customers() {
    ]
     return (
       <div className="min-h-screen">
-        <Form open={open} setOpen={setOpen} heading={"Add a Customer"} method={"POST"} url={'http://localhost:8080/customer'} submitText={"Submit"} fields={fields}/>
-        <Form open={customerEditOpen} setOpen={setCustomerEditOpen} fields={fields} heading={`Edit ${customerEditInitialValue?.name} Details`}  url={`http://localhost:8080/customer/${customerEditInitialValue?.id}`} submitText={"Edit Customer"} method={"PUT"} initialFieldsData={customerEditInitialValue}  />
+        <Form open={open} setOpen={setOpen} heading={"Add a Customer"} method={"POST"} url={`${import.meta.env.VITE_BACKEND_URL}/customer`} submitText={"Submit"} fields={fields}/>
+        <Form open={customerEditOpen} setOpen={setCustomerEditOpen} fields={fields} heading={`Edit ${customerEditInitialValue?.name} Details`}  url={`${import.meta.env.VITE_BACKEND_URL}/customer/${customerEditInitialValue?.id}`} submitText={"Edit Customer"} method={"PUT"} initialFieldsData={customerEditInitialValue}  />
         <div className={"flex justify-between px-10"}>
           <div className="flex flex-col justify-center font-heading text-2xl font-bold my-4">
             <div>

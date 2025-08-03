@@ -21,7 +21,7 @@ function Signin({setUserDetails}) {
     },[])
     async function handleOnClick(){
         try{
-        const res = await axios.post('http://localhost:8080/auth/authenticate',{
+        const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/authenticate`,{
                       'phone_number' : phoneNum,
                       'password' : password
                         })
@@ -29,7 +29,7 @@ function Signin({setUserDetails}) {
           const token = res.data.token;
           window.localStorage.setItem('token', `Bearer ${token}`);
           const newToken = 'Bearer '+token;
-      axios.get('http://localhost:8080/',{
+      axios.get(import.meta.env.VITE_BACKEND_URL,{
         headers : {
           'Authorization' : newToken,
           'Content-Type' : 'application/json'

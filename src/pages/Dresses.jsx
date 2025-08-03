@@ -10,7 +10,7 @@ function Dresses() {
   const [dressModalId, setDressModalId] = useState(null);
   const [dressEditOpen, setDressEditOpen] = useState(false);
   const [dressEditInitialValue, setDressEditInitialValue] = useState(null);
-  const dressData = Get("http://localhost:8080/dresses");
+  const dressData = Get(`${import.meta.env.VITE_BACKEND_URL}/dresses`);
   const fields = [
     {
       name: "name",
@@ -54,8 +54,8 @@ function Dresses() {
   console.log("dressData", dressData);
   return (
     <div className="min-h-screen">
-      <Form open={open} setOpen={setOpen} heading={"Add a Dress"} method={"POST"} url={'http://localhost:8080/dresses'} submitText={"Submit"} fields={fields} />
-      <Form open={dressEditOpen} setOpen={setDressEditOpen} fields={fields} heading={`Edit ${dressEditInitialValue?.name} Details`} url={`http://localhost:8080/dresses/${dressEditInitialValue?.id}`} submitText={"Edit Dress"} method={"PUT"} initialFieldsData={dressEditInitialValue} />
+      <Form open={open} setOpen={setOpen} heading={"Add a Dress"} method={"POST"} url={`${import.meta.env.VITE_BACKEND_URL}/dresses`} submitText={"Submit"} fields={fields} />
+      <Form open={dressEditOpen} setOpen={setDressEditOpen} fields={fields} heading={`Edit ${dressEditInitialValue?.name} Details`} url={`${import.meta.env.VITE_BACKEND_URL}/dresses/${dressEditInitialValue?.id}`} submitText={"Edit Dress"} method={"PUT"} initialFieldsData={dressEditInitialValue} />
       <div className={"flex justify-between px-10"}>
         <div className="flex flex-col justify-center font-heading text-2xl font-bold my-4">
           <div>

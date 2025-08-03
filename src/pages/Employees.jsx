@@ -10,7 +10,7 @@ function Employee() {
   const [employeeModalId, setEmployeeModalId] = useState(null);
   const [employeeEditOpen, setEmployeeEditOpen] = useState(0);
   const [employeeEditInitialValue, setEmployeeEditInitialValue] = useState(null);
-  const employeeData = Get("http://localhost:8080/employee");
+  const employeeData = Get(`${import.meta.env.VITE_BACKEND_URL}/employee`);
   // {open, setOpen, heading, onSubmit, submitText, fields}
   // Fields syntax
   // {
@@ -53,8 +53,8 @@ function Employee() {
    ]
     return (
       <div className="min-h-screen">
-        <Form open={open} setOpen={setOpen} heading={"Add an Employee"} method={"POST"} url={'http://localhost:8080/employee'} submitText={"Submit"} fields={fields}/>
-        <Form open={employeeEditOpen} setOpen={setEmployeeEditOpen} fields={fields} heading={`Edit ${employeeEditInitialValue?.name} Details`}  url={`http://localhost:8080/employee/${employeeEditInitialValue?.emp_id}`} submitText={"Edit Employee"} method={"PUT"} initialFieldsData={employeeEditInitialValue}  />
+        <Form open={open} setOpen={setOpen} heading={"Add an Employee"} method={"POST"} url={`${import.meta.env.VITE_BACKEND_URL}/employee`} submitText={"Submit"} fields={fields}/>
+        <Form open={employeeEditOpen} setOpen={setEmployeeEditOpen} fields={fields} heading={`Edit ${employeeEditInitialValue?.name} Details`}  url={`${import.meta.env.VITE_BACKEND_URL}/employee/${employeeEditInitialValue?.emp_id}`} submitText={"Edit Employee"} method={"PUT"} initialFieldsData={employeeEditInitialValue}  />
         <div className={"flex justify-between px-10"}>
           <div className="flex flex-col justify-center font-heading text-2xl font-bold my-4">
             <div>
