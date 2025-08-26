@@ -1,4 +1,9 @@
 # Setting up the FrontEnd
+## Url Routes for the Frontend
+```sh
+https://excalidraw.com/#json=bIMhucLb4oQXLYBhRRwUZ,kTAwfFJVLaGfK_pVWRWsdQ
+```
+
 ## Setting up Locally
 
 ### 1. Clone the repository
